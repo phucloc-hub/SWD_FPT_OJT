@@ -35,7 +35,7 @@ namespace SWD_DEMO.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=localhost;Database=SWD;User Id=sa;Password=1");
+                optionsBuilder.UseSqlServer("Server=tcp:swdfpt.database.windows.net,1433;Initial Catalog=SWD;Persist Security Info=False;User ID=loccute;Password=S2xXZGVG3p6h;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using SWD_DEMO.Models;
+﻿using SWD_DEMO.DTOS;
+using SWD_DEMO.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,9 @@ namespace SWD_DEMO.Services
         Student DeleteStudent(string _id);
 
         Student GetStudentByID(string _id);
+
+        Student GetStudentByEmail(String _email);
+
         IEnumerable<Student> GetAllStudent();
     }
 }

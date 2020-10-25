@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SWD_DEMO.DTOS;
 using SWD_DEMO.Models;
 using SWD_DEMO.Services;
 
@@ -41,6 +42,8 @@ namespace SWD_DEMO.Controllers
             return NotFound();
         }
 
+    
+
         [HttpGet("{email}")]
         public IActionResult GetAccountByEmail(string email)
         {
@@ -56,19 +59,26 @@ namespace SWD_DEMO.Controllers
         [HttpPut ("{email}")]
         public IActionResult UpdateAccountByEmail(string email, [FromBody] Account accountDTO)
         {
-       /*     var account = _mapper.Map<Account>(accountDTO);// mapping object to a row in db
-            if(_id != account.Code)
-            {
-                return BadRequest();
-            }*/
+            /*     var account = _mapper.Map<Account>(accountDTO);// mapping object to a row in db
+                 if(_id != account.Code)
+                 {
+                     return BadRequest();
+                 }*/
+           /* var config = new MapperConfiguration(cfg => cfg.CreateMap<AccountDTO, Account>());
+            var mapper = new Mapper(config);
+            var dto = mapper.Map<Account>(accountDTO);*/
+
+  
+
 
             var accountCheckingExist = _service.GetAccountByEmail(email);
             if(accountCheckingExist != null)
             {
-                _service.UpdateAccount(accountDTO);
+                var rs=  _service.UpdateAccount(accountDTO);
                 try
                 {
-                    _service.Commit();
+                    this._context.Account.Update(rs);
+                    this._context.SaveChanges();
                 }
                 catch (DbUpdateConcurrencyException)
                 {

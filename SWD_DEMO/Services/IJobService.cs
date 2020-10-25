@@ -16,5 +16,8 @@ namespace SWD_DEMO.Services
 
         Job GetJobByID(int _id);
         IEnumerable<Job> GetAllJob(int pageNum, int recordPerPage);
+
+        IEnumerable<Job> GetAllJob(int pageNum, int recordPerPage, string uniCode);
+
     }
 }

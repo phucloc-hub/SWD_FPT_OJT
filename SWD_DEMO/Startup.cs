@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,7 +30,12 @@ namespace SWD_DEMO
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<SWDContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("SWDContext")));
+            services.AddDbContext<SWDContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("SWDContext")).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking), ServiceLifetime.Scoped, ServiceLifetime.Scoped);
+            services.AddControllersWithViews()
+            .AddNewtonsoftJson(options =>
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
+
             services.AddScoped<IJobService, JobService>();
             services.AddScoped<IStudentService, StudentService>();
             services.AddScoped<IUniversityService, UniversityService>();
@@ -43,6 +49,7 @@ namespace SWD_DEMO
             services.AddScoped<IUniversitySemesterService, UniversitySemesterService>();
             services.AddScoped<IUniversityMajorService, UniversityMajorService>();
 
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         }
 

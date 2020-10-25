@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FakeItEasy;
+using Microsoft.EntityFrameworkCore;
 using SWD_DEMO.Models;
 using System;
 using System.Collections.Generic;
@@ -72,6 +73,7 @@ namespace SWD_DEMO.Services
             return dbSet.Where(expression).Skip(_pagenum * _perpage).Take(_perpage);
         }
 
+
         public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> expression = null)
         {
             if (expression == null)
@@ -91,10 +93,10 @@ namespace SWD_DEMO.Services
         {
             return dbSet.FirstOrDefault(exception);
         }
-
+        
         public TEntity Update(TEntity entity)
         {
-            var result = _context.Entry(entity).State = EntityState.Modified;
+            _context.Entry(entity).State = EntityState.Modified;
             return entity;
         }
 

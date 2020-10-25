@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Reflection;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SWD_DEMO.DTOS;
 using SWD_DEMO.Models;
 using SWD_DEMO.Services;
+using Umbraco.Core.Models.Entities;
 
 namespace SWD_DEMO.Controllers
 {
@@ -26,6 +29,7 @@ namespace SWD_DEMO.Controllers
         {
             _service = service;
             _context = context;
+ 
         }
 
 
@@ -34,6 +38,18 @@ namespace SWD_DEMO.Controllers
         public IActionResult Get(int pageNum,int recordPerPage)
         {
             var result = _service.GetAllJob(pageNum,recordPerPage);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            return NotFound();
+        }
+
+        // GET api/jobs
+        [HttpGet("{pageNum}/{recordPerPage}/{uniCode}")]
+        public IActionResult Get(int pageNum, int recordPerPage,string uniCode)
+        {
+            var result = _service.GetAllJob(pageNum, recordPerPage, uniCode);
             if (result != null)
             {
                 return Ok(result);
@@ -56,11 +72,17 @@ namespace SWD_DEMO.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateJobById(int id,[FromBody] Job jobDTO)
         {
-       /*     var job = _mapper.Map<Job>(jobDTO);// mapping object to a row in db
-            if(_id != job.Code)
-            {
-                return BadRequest();
-            }*/
+           /* var config = new MapperConfiguration(cfg => cfg.CreateMap<JobDTOResponse, Job> ());
+            var mapper = new Mapper(config);
+            var dto = mapper.Map<Job>(jobDTO);*/
+
+            /*var job = _mapper.Map<Job>(jobDTO);*/// mapping object to a row in db
+
+
+            /*  if (_id != job.Code)
+              {
+                  return BadRequest();
+              }*/
 
             var jobCheckingExist = _service.GetJobByID(id);
             if(jobCheckingExist != null)
@@ -68,6 +90,7 @@ namespace SWD_DEMO.Controllers
                 _service.UpdateJob(jobDTO);
                 try
                 {
+                    /*this._context.Job.Update(jobDTO);*/
                     _service.Commit();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -111,7 +134,7 @@ namespace SWD_DEMO.Controllers
         }
 
 
-      
+
         private bool IsExistJob(int id)
         {
             return _context.Job.Any(e => e.Id == id);

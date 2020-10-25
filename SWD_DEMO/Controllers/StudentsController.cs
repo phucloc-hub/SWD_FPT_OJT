@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Castle.Core.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using SWD_DEMO.DTOS;
 using SWD_DEMO.Models;
 using SWD_DEMO.Services;
 
@@ -18,28 +21,19 @@ namespace SWD_DEMO.Controllers
 
         private readonly IStudentService _service;
 
-        /*private readonly IMapper _mapper;*/
+        private readonly IMapper _mapper;
         private readonly SWDContext _context;
+        
 
-        public StudentsController(IStudentService service, SWDContext context)
+        public StudentsController(IStudentService service, SWDContext context, IMapper mapper)
         {
             _service = service;
             _context = context;
+            _mapper = mapper;
         }
 
 
 
-        // GET api/jobs
-        [HttpGet]
-        public IActionResult Get()
-        {
-            var result = _service.GetAllStudent();
-            if (result != null)
-            {
-                return Ok(result);
-            }
-            return NotFound();
-        }
 
         [HttpGet("{id}")]
         public IActionResult GetStudentId(string _id)
@@ -51,6 +45,45 @@ namespace SWD_DEMO.Controllers
             }
             return NotFound();
         }
+
+
+        // GET api/jobs
+        [HttpGet("student")]
+        /*public IActionResult GetStudent([FromBody] Account accountReq) => accountReq.Email.IsNullOrEmpty() ? GetAllStudent() : GetStudentInFoByEmail(accountReq);*/
+        public IActionResult GetAllStudent()
+        {
+            var result = _service.GetAllStudent();
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            return NotFound();
+        }
+
+        [HttpGet]
+        public IActionResult GetStudentInFoByEmail( Account accountReq)
+        {
+
+            if (!accountReq.Role.IsNullOrEmpty()  && accountReq.Role.Equals("Student"))
+            {
+                var result = _service.GetStudentByEmail(accountReq.Email);
+               var studentinfp = _mapper.Map<StudentRespInfo>(result);
+                studentinfp.Name = result.MajorCodeNavigation.Name;
+
+                if (result != null)
+                {
+                    return Ok(studentinfp);
+                }
+                return NotFound();
+            }
+            else
+            {
+                return BadRequest();
+            }
+            
+        }
+
+        
 
 
         [HttpPut ("{id}")]
