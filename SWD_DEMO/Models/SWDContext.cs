@@ -185,6 +185,9 @@ namespace SWD_DEMO.Models
                     .IsRequired()
                     .HasMaxLength(50);
 
+                entity.Property(e => e.Subject)
+                    .HasMaxLength(20);
+
                 entity.Property(e => e.StartDate).HasColumnType("datetime");
 
                 entity.HasOne(d => d.CompCodeNavigation)
@@ -298,6 +301,10 @@ namespace SWD_DEMO.Models
                 entity.Property(e => e.PhoneNo).HasMaxLength(10);
 
                 entity.Property(e => e.UniCode).HasMaxLength(20);
+
+                entity.Property(e => e.Graduation).HasMaxLength(20);
+
+
 
                 entity.HasOne(d => d.EmailNavigation)
                     .WithMany(p => p.Student)

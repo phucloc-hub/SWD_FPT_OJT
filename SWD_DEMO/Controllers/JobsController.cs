@@ -46,10 +46,10 @@ namespace SWD_DEMO.Controllers
         }
 
         // GET api/jobs
-        [HttpGet("{pageNum}/{recordPerPage}/{uniCode}")]
-        public IActionResult Get(int pageNum, int recordPerPage,string uniCode)
+        [HttpGet("{pageNum}/{recordPerPage}/{uniCode}/{majorCode}")]
+        public IActionResult Get(int pageNum, int recordPerPage,string uniCode,string majorCode)
         {
-            var result = _service.GetAllJob(pageNum, recordPerPage, uniCode);
+            var result = _service.GetAllJob(pageNum, recordPerPage, uniCode, majorCode);
             if (result != null)
             {
                 return Ok(result);

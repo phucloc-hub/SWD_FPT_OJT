@@ -23,6 +23,8 @@ namespace SWD_DEMO.Models
         public int Quantity { get; set; }
         public bool Status { get; set; }
 
+        public string Subject { get; set; }
+
         public virtual Company CompCodeNavigation { get; set; }
         public virtual Major MajorCodeNavigation { get; set; }
         public virtual ICollection<Application> Application { get; set; }

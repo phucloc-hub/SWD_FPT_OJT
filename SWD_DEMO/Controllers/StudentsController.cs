@@ -60,13 +60,13 @@ namespace SWD_DEMO.Controllers
             return NotFound();
         }
 
-        [HttpGet]
-        public IActionResult GetStudentInFoByEmail( Account accountReq)
+        [HttpGet("{email}/{role}")]
+        public IActionResult GetStudentInFoByEmail(string email,string role)
         {
 
-            if (!accountReq.Role.IsNullOrEmpty()  && accountReq.Role.Equals("Student"))
+            if (!email.IsNullOrEmpty())
             {
-                var result = _service.GetStudentByEmail(accountReq.Email);
+                var result = _service.GetStudentByEmail(email);
                var studentinfp = _mapper.Map<StudentRespInfo>(result);
                 studentinfp.Name = result.MajorCodeNavigation.Name;
 

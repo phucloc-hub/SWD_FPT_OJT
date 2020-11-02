@@ -1,11 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using SWD_DEMO.Constants;
 using SWD_DEMO.DTOS;
 using SWD_DEMO.Models;
 using SWD_DEMO.Services;
@@ -19,11 +26,13 @@ namespace SWD_DEMO.Controllers
 
         private readonly IAccountService _service;
 
+        private IConfiguration configuration;
         /*private readonly IMapper _mapper;*/
         private readonly SWDContext _context;
 
-        public AccountsController(IAccountService service, SWDContext context)
+        public AccountsController(IConfiguration configuration,IAccountService service, SWDContext context)
         {
+            this.configuration = configuration;
             _service = service;
             _context = context;
         }
@@ -104,6 +113,7 @@ namespace SWD_DEMO.Controllers
             return Created("Get", _entity);
         }
 
+        /*[Authorize(ConstantRegister.RoleAd == HttpContext.User.Identity.)]*/
         [HttpDelete("{email}")]
         public IActionResult DeleteAccountByID(string email)
         {
@@ -119,6 +129,30 @@ namespace SWD_DEMO.Controllers
                 return NotFound();
             }
         }
+
+        private string GenerateJSONWebToken(Account accountInfo)
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Email,accountInfo.Email),
+                new Claim(ConstantRegister.RoleKey,accountInfo.Role)
+            };
+            var token = new JwtSecurityToken(
+
+                issuer: configuration["Jwt:Issuer"],
+                audience: configuration["Jwt:Issuer"],
+                claims,
+                expires: DateTime.Now.AddMinutes(120),
+                signingCredentials: credentials
+            );
+            var encodetoken = new JwtSecurityTokenHandler().WriteToken(token);
+            return encodetoken;
+
+        }
+
+
 
 
       

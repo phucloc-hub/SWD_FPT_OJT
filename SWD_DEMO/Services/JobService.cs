@@ -35,7 +35,7 @@ namespace SWD_DEMO.Services
             return GetAll(pageNum,recordPerPage);
         }
 
-        public IEnumerable<Job> GetAllJob(int pageNum, int recordPerPage,string uniCode)
+        public IEnumerable<Job> GetAllJob(int pageNum, int recordPerPage,string uniCode,string majorCode)
         {
             /* string qr= 
              var query = from st in context.Job join Company
@@ -48,7 +48,7 @@ namespace SWD_DEMO.Services
 
 
 
-            return context.Job.FromSqlRaw(sql, new SqlParameter("@uniCode", uniCode))
+            return context.Job.FromSqlRaw(sql, new SqlParameter("@uniCode", uniCode)).Where(a => a.MajorCode == majorCode)
                               .ToList();
         }
 
