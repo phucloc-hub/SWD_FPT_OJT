@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Castle.Core.Internal;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -40,10 +41,10 @@ namespace SWD_DEMO.Controllers
 
 
         // GET api/jobs
-        [HttpGet]
-        public IActionResult Get()
+        [HttpGet("accountAll/{pagenum}")]
+        public IActionResult Get(int pagenum)
         {
-            var result = _service.GetAllAccount();
+            var result = _service.GetAllAccount(pagenum);
             if (result != null)
             {
                 return Ok(result);
@@ -130,7 +131,27 @@ namespace SWD_DEMO.Controllers
             }
         }
 
-        private string GenerateJSONWebToken(Account accountInfo)
+        [HttpPost("{idToken}")]
+        // before call login function, flutter called a GET api to know this email is existed in DB 
+        public IActionResult Login(string idToken)
+        {
+            string rs = ConstantParameter.STRING_EMPTY;
+            if (!idToken.IsNullOrEmpty())
+            {
+                var userInfo = SetUpUserInfo(idToken);
+                if (!userInfo.Role.IsNullOrEmpty())
+                {
+                    rs = GenerateJSONWebToken(userInfo);
+
+                }
+
+
+            }
+            return Ok(rs);
+
+        }
+
+        private string GenerateJSONWebToken(AccountDTO accountInfo)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -152,10 +173,26 @@ namespace SWD_DEMO.Controllers
 
         }
 
+        private AccountDTO SetUpUserInfo(string idToken)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var json = handler.ReadJwtToken(idToken).Claims.ToList();
+
+            AccountDTO accountDTO = new AccountDTO();
+            accountDTO.Email = json.Where(x => x.Type.Equals(ConstantParameter.Email_Str)).Select(x => x.Value).ToString();
+            var accDb = _service.GetAccountByEmail(accountDTO.Email);
+            if (accDb != null)
+            {
+                accountDTO.Role = accDb.Role;
+            }
+
+            return accountDTO;
+
+        }
 
 
 
-      
+
         private bool IsExistAccount(string email)
         {
             return _context.Account.Any(e => e.Email == email);

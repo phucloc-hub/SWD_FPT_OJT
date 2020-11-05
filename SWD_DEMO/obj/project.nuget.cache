@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "fbwNESgkfkij3NfAOUiy8Cpz5quZp8/CTn7KTp/jz1QJVGySYHxjQHg862jVOHeqiRcGBuZ9pqfrpwwn88hTZw==",
+  "dgSpecHash": "c3OPyIinHK9WPMG4awHjdWwz7r1HKyClervEXIY8xlTpgNqxbbeHWGkeAXRT1cSnt5+16IrpD2b+LA1p+KzJiw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin-s\\source\\repos\\SWD_DEMO\\SWD_DEMO\\SWD_DEMO.csproj",
+  "projectFilePath": "C:\\Users\\Admin-s\\Downloads\\SWD_FPT_OJT-locbrach\\SWD_FPT_OJT-locbrach\\SWD_DEMO\\SWD_DEMO.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin-s\\.nuget\\packages\\automapper\\10.1.0\\automapper.10.1.0.nupkg.sha512",
     "C:\\Users\\Admin-s\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.1.0\\automapper.extensions.microsoft.dependencyinjection.8.1.0.nupkg.sha512",

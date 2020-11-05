@@ -40,5 +40,10 @@ namespace SWD_DEMO.Services
         {
             return GetByID(_email);
         }
+
+        public IEnumerable<Account> GetAllAccount(int pageNum)
+        {
+            return GetAll(pageNum);
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using FakeItEasy;
 using Microsoft.EntityFrameworkCore;
+using SWD_DEMO.Constants;
 using SWD_DEMO.Models;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace SWD_DEMO.Services
     {
         TEntity GetByID(TKey id);
         TEntity GetByTwoID(Expression<Func<TEntity, bool>> exception);
-        IEnumerable<TEntity> GetAll(int _pagenum, int _perpage, Expression<Func<TEntity, bool>> expression);
+        IEnumerable<TEntity> GetAll(int _pagenum, Expression<Func<TEntity, bool>> expression);
         IQueryable<TEntity> Entity();
         TEntity Add(TEntity entity);
         TEntity Update(TEntity entity);
@@ -64,13 +65,13 @@ namespace SWD_DEMO.Services
             return dbSet;
         }
 
-        public IEnumerable<TEntity> GetAll(int _pagenum, int _perpage, Expression<Func<TEntity, bool>> expression = null)
+        public IEnumerable<TEntity> GetAll(int _pagenum, Expression<Func<TEntity, bool>> expression = null)
         {
             if (expression == null)
             {
-                return dbSet.Skip((_pagenum - 1) * _perpage).Take(_perpage);
+                return dbSet.Skip((_pagenum - 1) * ConstantParameter.DataPerPage).Take(ConstantParameter.DataPerPage);
             }
-            return dbSet.Where(expression).Skip(_pagenum * _perpage).Take(_perpage);
+            return dbSet.Where(expression).Skip(_pagenum * ConstantParameter.DataPerPage).Take(ConstantParameter.DataPerPage);
         }
 
 

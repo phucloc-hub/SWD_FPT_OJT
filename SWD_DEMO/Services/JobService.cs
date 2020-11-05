@@ -30,25 +30,25 @@ namespace SWD_DEMO.Services
             return Delete(_id);
         }
 
-        public IEnumerable<Job> GetAllJob(int pageNum,int recordPerPage)
+        public IEnumerable<Job> GetAllJob(int pageNum)
         {
-            return GetAll(pageNum,recordPerPage);
+            return GetAll(pageNum);
         }
 
-        public IEnumerable<Job> GetAllJob(int pageNum, int recordPerPage,string uniCode,string majorCode)
+        public IEnumerable<Job> GetAllJob(int pageNum, string uniCode, string majorCode, string subject)
         {
             /* string qr= 
-             var query = from st in context.Job join Company
-                         where st.StudentName == "Bill"
-                         select st;
+           var query = from st in context.Job join Company
+                       where st.StudentName == "Bill"
+                       select st;
 
-             var student = query.FirstOrDefault<Student>();*/
+           var student = query.FirstOrDefault<Student>();*/
             string sql = "select * from job where job.CompCode in (select c.CompCode from connection c inner join company ca on ca.Code = c.CompCode where c.[unicode] = @uniCode)";
 
 
 
 
-            return context.Job.FromSqlRaw(sql, new SqlParameter("@uniCode", uniCode)).Where(a => a.MajorCode == majorCode)
+            return context.Job.FromSqlRaw(sql, new SqlParameter("@uniCode", uniCode)).Where(a => a.MajorCode == majorCode && a.Subject == subject)
                               .ToList();
         }
 

@@ -12,4 +12,12 @@ namespace SWD_DEMO.Constants
         public const string RoleStudent = "student";
         public const string RoleCompany = "company";
     }
+    public class ConstantParameter
+    {
+        public const int DataPerPage = 5;
+        public const string Email_Str = "email";
+        public const string Role_Str = "role";
+        public const string STRING_EMPTY = "";
+    }
+
 }

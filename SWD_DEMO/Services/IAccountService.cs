@@ -15,6 +15,8 @@ namespace SWD_DEMO.Services
         Account GetAccountByEmail(string _email);
         IEnumerable<Account> GetAllAccount();
 
+        IEnumerable<Account> GetAllAccount(int pageNum);
+
 
     }
 }

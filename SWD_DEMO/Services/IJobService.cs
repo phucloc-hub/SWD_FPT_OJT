@@ -15,9 +15,9 @@ namespace SWD_DEMO.Services
         Job DeleteJob(int _id);
 
         Job GetJobByID(int _id);
-        IEnumerable<Job> GetAllJob(int pageNum, int recordPerPage);
+        IEnumerable<Job> GetAllJob(int pageNum);
 
-        IEnumerable<Job> GetAllJob(int pageNum, int recordPerPage, string uniCode,string majorCode);
+        IEnumerable<Job> GetAllJob(int pageNum, string uniCode,string majorCode,string subject);
 
     }
 }

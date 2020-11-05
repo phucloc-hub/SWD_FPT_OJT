@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Admin-s\\source\\repos\\SWD_DEMO\\SWD_DEMO\\SWD_DEMO.csproj": {}
+    "C:\\Users\\Admin-s\\Downloads\\SWD_FPT_OJT-locbrach\\SWD_FPT_OJT-locbrach\\SWD_DEMO\\SWD_DEMO.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Admin-s\\source\\repos\\SWD_DEMO\\SWD_DEMO\\SWD_DEMO.csproj": {
+    "C:\\Users\\Admin-s\\Downloads\\SWD_FPT_OJT-locbrach\\SWD_FPT_OJT-locbrach\\SWD_DEMO\\SWD_DEMO.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Admin-s\\source\\repos\\SWD_DEMO\\SWD_DEMO\\SWD_DEMO.csproj",
+        "projectUniqueName": "C:\\Users\\Admin-s\\Downloads\\SWD_FPT_OJT-locbrach\\SWD_FPT_OJT-locbrach\\SWD_DEMO\\SWD_DEMO.csproj",
         "projectName": "SWD_DEMO",
-        "projectPath": "C:\\Users\\Admin-s\\source\\repos\\SWD_DEMO\\SWD_DEMO\\SWD_DEMO.csproj",
+        "projectPath": "C:\\Users\\Admin-s\\Downloads\\SWD_FPT_OJT-locbrach\\SWD_FPT_OJT-locbrach\\SWD_DEMO\\SWD_DEMO.csproj",
         "packagesPath": "C:\\Users\\Admin-s\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Admin-s\\source\\repos\\SWD_DEMO\\SWD_DEMO\\obj\\",
+        "outputPath": "C:\\Users\\Admin-s\\Downloads\\SWD_FPT_OJT-locbrach\\SWD_FPT_OJT-locbrach\\SWD_DEMO\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Admin-s\\AppData\\Roaming\\NuGet\\NuGet.Config",
