@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SWD_DEMO.Constants;
 using SWD_DEMO.DTOS;
 using SWD_DEMO.Models;
 using SWD_DEMO.Services;
@@ -22,13 +25,14 @@ namespace SWD_DEMO.Controllers
 
         private readonly IJobService _service;
 
-        /*private readonly IMapper _mapper;*/
+        private readonly IMapper _mapper;
         private readonly SWDContext _context;
 
-        public JobsController(IJobService service, SWDContext context)
+        public JobsController(IJobService service, SWDContext context,IMapper mapper)
         {
             _service = service;
             _context = context;
+            _mapper = mapper;
  
         }
 
@@ -53,6 +57,31 @@ namespace SWD_DEMO.Controllers
             if (result != null)
             {
                 return Ok(result);
+            }
+            return NotFound();
+        }
+
+        
+
+        // GET api/jobs
+        [HttpGet("{uniCode}/{majorCode}/{subject}")]
+        public IActionResult GetAllJobForListOptions(string uniCode, string majorCode, string subject)
+        {
+            List<JobResponseForListOption> asd = new List<JobResponseForListOption>();
+            var result = _service.GetAllJobForListOptions(uniCode, majorCode, subject);
+
+            foreach(var rs in result)
+            {
+                var jobResponse = _mapper.Map<JobResponseForListOption>(rs);
+                 asd.Add(jobResponse);
+               
+            }
+
+            IEnumerable<JobResponseForListOption> rsl = asd;
+
+            if (result != null)
+            {
+                return Ok(rsl);
             }
             return NotFound();
         }

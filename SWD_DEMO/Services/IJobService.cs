@@ -19,5 +19,7 @@ namespace SWD_DEMO.Services
 
         IEnumerable<Job> GetAllJob(int pageNum, string uniCode,string majorCode,string subject);
 
+        IEnumerable<Job> GetAllJobForListOptions(string uniCode, string majorCode, string subject);
+
     }
 }

@@ -16,6 +16,8 @@ namespace SWD_DEMO.DTOS
         public string MajorCode { get; set; }
         public string UniCode { get; set; }
         public string Name { get; set; }
+        
+        public string Graduation { get; set; }
 
     }
 }

@@ -10,8 +10,13 @@ namespace SWD_DEMO.Helper
     {
         public AutoMapConfig()
         {
+            // for student controller
             CreateMap<DTOS.StudentRespInfo, Models.Student>();
             CreateMap<Models.Student,DTOS.StudentRespInfo>();
+
+            // for job controller
+            CreateMap<DTOS.JobResponseForListOption, Models.Job>();
+            CreateMap<Models.Job, DTOS.JobResponseForListOption>();
         }
     }
 }

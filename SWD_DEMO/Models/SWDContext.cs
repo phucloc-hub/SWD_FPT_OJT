@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using SWD_DEMO.DTOS;
 
 namespace SWD_DEMO.Models
 {
@@ -15,6 +16,7 @@ namespace SWD_DEMO.Models
         {
         }
 
+        public virtual DbQuery<HotCompanyDTO> HotCompanyDTOQuery { get; set; }
         public virtual DbSet<Account> Account { get; set; }
         public virtual DbSet<Application> Application { get; set; }
         public virtual DbSet<Company> Company { get; set; }

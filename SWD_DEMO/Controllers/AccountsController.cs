@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Castle.Core.Internal;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,8 +21,10 @@ using SWD_DEMO.Services;
 
 namespace SWD_DEMO.Controllers
 {
+    //[EnableCors("CorsPolicy")]
     [Route("api/accounts")]
     [ApiController]
+    
     public class AccountsController : ControllerBase
     {
 
@@ -54,6 +57,7 @@ namespace SWD_DEMO.Controllers
 
     
 
+
         [HttpGet("{email}")]
         public IActionResult GetAccountByEmail(string email)
         {
@@ -67,6 +71,7 @@ namespace SWD_DEMO.Controllers
 
 
         [HttpPut ("{email}")]
+        [Authorize(Roles = ConstantRegister.RoleAd)]
         public IActionResult UpdateAccountByEmail(string email, [FromBody] Account accountDTO)
         {
             /*     var account = _mapper.Map<Account>(accountDTO);// mapping object to a row in db
@@ -107,6 +112,7 @@ namespace SWD_DEMO.Controllers
         }
         // POST: AccountsController/Create
         [HttpPost]
+        [Authorize(Roles = ConstantRegister.RoleAd)]
         public IActionResult Post([FromBody] Account _entity)
         {
             _service.CreateAccount(_entity);
@@ -116,6 +122,7 @@ namespace SWD_DEMO.Controllers
 
         /*[Authorize(ConstantRegister.RoleAd == HttpContext.User.Identity.)]*/
         [HttpDelete("{email}")]
+        [Authorize(Roles = ConstantRegister.RoleAd)]
         public IActionResult DeleteAccountByID(string email)
         {
             var account = _service.GetAccountByEmail(email);
@@ -132,6 +139,7 @@ namespace SWD_DEMO.Controllers
         }
 
         [HttpPost("{idToken}")]
+        [AllowAnonymous]
         // before call login function, flutter called a GET api to know this email is existed in DB 
         public IActionResult Login(string idToken)
         {
@@ -142,12 +150,11 @@ namespace SWD_DEMO.Controllers
                 if (!userInfo.Role.IsNullOrEmpty())
                 {
                     rs = GenerateJSONWebToken(userInfo);
-
                 }
 
 
             }
-            return Ok(rs);
+            return Ok(new { token = rs});
 
         }
 
@@ -179,7 +186,7 @@ namespace SWD_DEMO.Controllers
             var json = handler.ReadJwtToken(idToken).Claims.ToList();
 
             AccountDTO accountDTO = new AccountDTO();
-            accountDTO.Email = json.Where(x => x.Type.Equals(ConstantParameter.Email_Str)).Select(x => x.Value).ToString();
+            accountDTO.Email = json.Where(x => x.Type.Equals(ConstantParameter.Email_Str)).FirstOrDefault().Value;
             var accDb = _service.GetAccountByEmail(accountDTO.Email);
             if (accDb != null)
             {

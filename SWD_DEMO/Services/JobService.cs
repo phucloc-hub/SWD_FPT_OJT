@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using SWD_DEMO.Constants;
 using SWD_DEMO.Models;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,17 @@ namespace SWD_DEMO.Services
                        select st;
 
            var student = query.FirstOrDefault<Student>();*/
+            string sql = "select * from job where job.CompCode in (select c.CompCode from connection c inner join company ca on ca.Code = c.CompCode where c.[unicode] = @uniCode)";
+
+
+
+
+            return context.Job.FromSqlRaw(sql, new SqlParameter("@uniCode", uniCode)).Where(a => a.MajorCode == majorCode && a.Subject == subject).Skip((pageNum -1 ) * ConstantParameter.DataPerPage).Take(ConstantParameter.DataPerPage)
+                              .ToList();
+        }
+
+        public IEnumerable<Job> GetAllJobForListOptions(string uniCode, string majorCode, string subject)
+        {
             string sql = "select * from job where job.CompCode in (select c.CompCode from connection c inner join company ca on ca.Code = c.CompCode where c.[unicode] = @uniCode)";
 
 
